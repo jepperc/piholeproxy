@@ -4,6 +4,7 @@ WORKDIR /src/Proxy/
 COPY *.csproj ./
 #RUN dotnet restore CSharpProxy.csproj
 COPY . .
+RUN pwd && ls -l
 RUN dotnet publish CSharpProxy.csproj -c Release -o /app/publish
 
 # Runtime stage
