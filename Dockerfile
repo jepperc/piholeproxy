@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src/Proxy/
 COPY *.csproj ./
-RUN dotnet restore CSharpProxy.csproj
+#RUN dotnet restore CSharpProxy.csproj
 COPY . .
 RUN dotnet publish CSharpProxy.csproj -c Release -o /app/publish
 
