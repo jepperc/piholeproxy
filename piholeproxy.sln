@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpProxy", "src\CSharpProxy.csproj", "{713F01C1-CE7E-6864-CA9A-6D5490621F14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{713F01C1-CE7E-6864-CA9A-6D5490621F14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{713F01C1-CE7E-6864-CA9A-6D5490621F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{713F01C1-CE7E-6864-CA9A-6D5490621F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{713F01C1-CE7E-6864-CA9A-6D5490621F14}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {377A29B1-5EC7-4AB6-813A-79B120965728}
+	EndGlobalSection
+EndGlobal
