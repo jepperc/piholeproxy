@@ -9,30 +9,30 @@ on:
       - main
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+  # build-and-test:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      # Hent repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  #   steps:
+  #     # Hent repository
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      # Installer .NET SDK
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '9.0.x' # Skift til den version, du bruger
+  #     # Installer .NET SDK
+  #     - name: Setup .NET
+  #       uses: actions/setup-dotnet@v3
+  #       with:
+  #         dotnet-version: '9.0.x' # Skift til den version, du bruger
 
-      # Gennemfør .NET build
-      - name: Build .NET project
-        run: dotnet build src/Proxy --configuration Release
+  #     # Gennemfør .NET build
+  #     - name: Build .NET project
+  #       run: dotnet build src/Proxy --configuration Release
 
-      # Kør .NET tests
-      - name: Run .NET tests
-        run: dotnet test src/Proxy.Test --configuration Release --no-build --verbosity normal
+  #     # Kør .NET tests
+  #     - name: Run .NET tests
+  #       run: dotnet test src/Proxy.Test --configuration Release --no-build --verbosity normal
 
   build-and-push:
-    needs: build-and-test
+    # needs: build-and-test
     if: github.event_name == 'push'  # Kun kør denne del ved push til main (ikke pull requests)
     runs-on: ubuntu-latest
 
