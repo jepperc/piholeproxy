@@ -14,7 +14,7 @@ COPY src/Proxy/. ./
 RUN dotnet publish CSharpProxy.csproj -c Release -o /app/publish --no-restore
 
 # Runtime-stage: Brug .NET 9 ASP.NET runtime
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-noble-chiseled AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 
