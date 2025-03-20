@@ -9,30 +9,30 @@ on:
       - main
 
 jobs:
-  # build-and-test:
-  #   runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     # Hent repository
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+    steps:
+      # Hent repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  #     # Installer .NET SDK
-  #     - name: Setup .NET
-  #       uses: actions/setup-dotnet@v3
-  #       with:
-  #         dotnet-version: '9.0.x' # Skift til den version, du bruger
+      # Installer .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x' # Skift til den version, du bruger
 
-  #     # Gennemfør .NET build
-  #     - name: Build .NET project
-  #       run: dotnet build src/Proxy --configuration Release
+      # Gennemfør .NET build
+      - name: Build .NET project
+        run: dotnet build src/Proxy --configuration Release
 
-  #     # Kør .NET tests
-  #     - name: Run .NET tests
-  #       run: dotnet test src/Proxy.Test --configuration Release --no-build --verbosity normal
+      # Kør .NET tests
+      - name: Run .NET tests
+        run: dotnet test src/Proxy.Test --configuration Release --no-build --verbosity normal
 
   build-and-push:
-    # needs: build-and-test
+    needs: build-and-test
     if: github.event_name == 'push'  # Kun kør denne del ved push til main (ikke pull requests)
     runs-on: ubuntu-latest
 
@@ -41,8 +41,8 @@ jobs:
         uses: actions/checkout@v3
 
       # Setup QEMU for multi-arch builds
-      # - name: Set up QEMU
-      #   uses: docker/setup-qemu-action@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       # Setup Docker Buildx
       - name: Set up Docker Buildx
@@ -55,7 +55,5 @@ jobs:
       # Byg og push multi-arch Docker image (kun ved push til main)
       - name: Build and push Docker image
         run: |
-          docker buildx build --platform linux/amd64 \
+          docker buildx build --platform linux/amd64,linux/arm64 \
           -t ${{ vars.DOCKER_USERNAME }}/piholeproxy:latest --push .
-        # docker buildx build --platform linux/amd64,linux/arm64 \
-        # -t ${{ vars.DOCKER_USERNAME }}/piholeproxy:latest --push .
