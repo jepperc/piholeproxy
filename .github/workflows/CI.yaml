@@ -32,7 +32,6 @@ jobs:
         run: dotnet test src/Proxy.Test --configuration Release --no-build --verbosity normal
 
   build-and-push:
-    needs: build-and-test
     if: github.event_name == 'push'  # Kun kør denne del ved push til main (ikke pull requests)
     runs-on: ubuntu-latest
 
@@ -54,6 +53,7 @@ jobs:
 
       # Byg og push multi-arch Docker image (kun ved push til main)
       - name: Build and push Docker image
+        needs: build-and-test
         run: |
           docker buildx build --platform linux/amd64,linux/arm64 \
           -t ${{ vars.DOCKER_USERNAME }}/piholeproxy:latest --push .

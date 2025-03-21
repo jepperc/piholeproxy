@@ -14,6 +14,8 @@ async Task<IResult> ProxyRequest(string targetUrl, object body, string apiKey)
     using var client = new HttpClient();
     var auth = await client.PostAsJsonAsync($"{host}/auth", new { password = apiKey});
     auth.EnsureSuccessStatusCode();
+    var help = await auth.Content.ReadAsStringAsync();
+    Console.WriteLine(help);
     var authResp = await auth.Content.ReadFromJsonAsync<AuthResponse>();
     // Sæt Content-Type header
     //var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
