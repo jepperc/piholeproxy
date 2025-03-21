@@ -3,6 +3,8 @@ using System.Text;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
+var host = Environment.GetEnvironmentVariable("PIHOLE_HOST") ?? throw new ArgumentNullException("PIHOLE_HOST");
+var key = Environment.GetEnvironmentVariable("PIHOLE_API_KEY") ?? throw new ArgumentNullException("PIHOLE_API_KEY");
 var app = builder.Build();
 
 // Hjælpefunktion der sender et POST-kald til en given URL med et JSON-body
@@ -36,8 +38,8 @@ void MapProxyEndpoint(string route, string targetUrl, string jsonBody)
 // Eksempel: /disable endpoint, der omdanner GET til et POST-kald med et JSON-body
 MapProxyEndpoint(
     "/disable",
-    $"{(Environment.GetEnvironmentVariable("PIHOLE_HOST") ?? "http://192.168.1.2")}/admin/api.php",
-    JsonSerializer.Serialize(new { auth = Environment.GetEnvironmentVariable("PIHOLE_API_KEY") ?? "default_api_key", disable = 300 })
+    $"{Environment.GetEnvironmentVariable("PIHOLE_HOST")}/api.php",
+    JsonSerializer.Serialize(new { auth = Environment.GetEnvironmentVariable("PIHOLE_API_KEY"), disable = 300 })
 );
 
 // Eksempel på et andet endpoint – tilføj så mange du vil
