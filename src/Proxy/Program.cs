@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using CSharpProxy;
 
 var builder = WebApplication.CreateBuilder(args);
 var host = Environment.GetEnvironmentVariable("PIHOLE_HOST") ?? throw new ArgumentNullException("PIHOLE_HOST");
@@ -8,17 +9,21 @@ var key = Environment.GetEnvironmentVariable("PIHOLE_API_KEY") ?? throw new Argu
 var app = builder.Build();
 
 // Hjælpefunktion der sender et POST-kald til en given URL med et JSON-body
-async Task<IResult> ProxyRequest(string targetUrl, string jsonBody, string? apiKey)
+async Task<IResult> ProxyRequest(string targetUrl, object body, string apiKey)
 {
     using var client = new HttpClient();
+    var auth = await client.PostAsJsonAsync($"{host}/auth", new { password = apiKey});
+    auth.EnsureSuccessStatusCode();
+    var authResp = await auth.Content.ReadFromJsonAsync<AuthResponse>();
     // Sæt Content-Type header
-    var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+    //var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
     // Hvis apiKey er sat, tilføjes den til Authorization header
-    if (!string.IsNullOrWhiteSpace(apiKey))
+    if (!string.IsNullOrWhiteSpace(authResp?.Session.Sid))
     {
-        client.DefaultRequestHeaders.Add("sid", $"{apiKey}");
+        client.DefaultRequestHeaders.Add("sid", $"{authResp?.Session.Sid}");
     }
-    var response = await client.PostAsync(targetUrl, content);
+    var response = await client.PostAsJsonAsync(targetUrl, body);
+    //var response = await client.PostAsync(targetUrl, content);
     var responseContent = await response.Content.ReadAsStringAsync();
     return Results.Json(new {
         target = targetUrl,
@@ -28,36 +33,35 @@ async Task<IResult> ProxyRequest(string targetUrl, string jsonBody, string? apiK
 }
 
 // Hjælpefunktion til at mappe et endpoint
-void MapProxyEndpoint(string route, string targetUrl, string jsonBody)
+void MapProxyEndpoint(string route, string targetUrl, object body)
 {
     // Læs API-nøgle og eventuelt Pi-hole host fra miljøvariabler
-    var apiKey = Environment.GetEnvironmentVariable("PIHOLE_API_KEY");
-    app.MapGet(route, () => ProxyRequest(targetUrl, jsonBody, apiKey));
+    app.MapGet(route, () => ProxyRequest(targetUrl, body, key));
 }
 
 // Eksempel: /disable endpoint, der omdanner GET til et POST-kald med et JSON-body
 MapProxyEndpoint(
     "/disable",
     $"{host}/api/dns/blocking",
-    JsonSerializer.Serialize(new { blocking = false, timer = 300 })
+    new { blocking = false, timer = 300 }
 );
 
 MapProxyEndpoint(
     "/disable30",
     $"{host}/api/dns/blocking",
-    JsonSerializer.Serialize(new { blocking = false, timer = 30 })
+    new { blocking = false, timer = 30 }
 );
 
 MapProxyEndpoint(
     "/disableperm",
     $"{host}/api/dns/blocking",
-    JsonSerializer.Serialize(new { blocking = false })
+    new { blocking = false }
 );
 
 MapProxyEndpoint(
     "/enable",
     $"{host}/api/dns/blocking",
-    JsonSerializer.Serialize(new { blocking = true })
+    new { blocking = true }
 );
 
 app.Run();
