@@ -31,22 +31,33 @@ async Task<IResult> ProxyRequest(string targetUrl, string jsonBody, string? apiK
 void MapProxyEndpoint(string route, string targetUrl, string jsonBody)
 {
     // Læs API-nøgle og eventuelt Pi-hole host fra miljøvariabler
-    var apiKey = Environment.GetEnvironmentVariable("PIHOLE_API_KEY") ?? "";
+    var apiKey = Environment.GetEnvironmentVariable("PIHOLE_API_KEY");
     app.MapGet(route, () => ProxyRequest(targetUrl, jsonBody, apiKey));
 }
 
 // Eksempel: /disable endpoint, der omdanner GET til et POST-kald med et JSON-body
 MapProxyEndpoint(
     "/disable",
-    $"{Environment.GetEnvironmentVariable("PIHOLE_HOST")}/api.php",
-    JsonSerializer.Serialize(new { auth = Environment.GetEnvironmentVariable("PIHOLE_API_KEY"), disable = 300 })
+    $"{host}/api/dns/blocking",
+    JsonSerializer.Serialize(new { blocking = false, timer = 300 })
 );
 
-// Eksempel på et andet endpoint – tilføj så mange du vil
 MapProxyEndpoint(
-    "/another",
-    "http://example.com/another-api",
-    "{\"key\":\"value\"}"
+    "/disable30",
+    $"{host}/api/dns/blocking",
+    JsonSerializer.Serialize(new { blocking = false, timer = 30 })
+);
+
+MapProxyEndpoint(
+    "/disableperm",
+    $"{host}/api/dns/blocking",
+    JsonSerializer.Serialize(new { blocking = false })
+);
+
+MapProxyEndpoint(
+    "/enable",
+    $"{host}/api/dns/blocking",
+    JsonSerializer.Serialize(new { blocking = true })
 );
 
 app.Run();
