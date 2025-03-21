@@ -16,7 +16,7 @@ async Task<IResult> ProxyRequest(string targetUrl, string jsonBody, string? apiK
     // Hvis apiKey er sat, tilføjes den til Authorization header
     if (!string.IsNullOrWhiteSpace(apiKey))
     {
-        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+        client.DefaultRequestHeaders.Add("sid", $"{apiKey}");
     }
     var response = await client.PostAsync(targetUrl, content);
     var responseContent = await response.Content.ReadAsStringAsync();
