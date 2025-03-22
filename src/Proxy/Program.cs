@@ -11,7 +11,11 @@ var app = builder.Build();
 // Hjælpefunktion der sender et POST-kald til en given URL med et JSON-body
 async Task<IResult> ProxyRequest(string targetUrl, object body, string apiKey)
 {
-    using var client = new HttpClient();
+    var handler = new HttpClientHandler() 
+    { 
+        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    };
+    using var client = new HttpClient(handler);
     var auth = await client.PostAsJsonAsync($"{host}/auth", new { password = apiKey});
     auth.EnsureSuccessStatusCode();
     var help = await auth.Content.ReadAsStringAsync();
