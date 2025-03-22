@@ -16,6 +16,7 @@ async Task<IResult> ProxyRequest(string targetUrl, object body, string apiKey)
         ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
     };
     using var client = new HttpClient(handler);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
     var auth = await client.PostAsJsonAsync($"{host}/auth", new { password = apiKey});
     auth.EnsureSuccessStatusCode();
     var help = await auth.Content.ReadAsStringAsync();
