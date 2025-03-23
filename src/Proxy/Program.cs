@@ -1,6 +1,3 @@
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
 using CSharpProxy;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,21 +13,17 @@ async Task<IResult> ProxyRequest(string targetUrl, object body, string apiKey)
         ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
     };
     using var client = new HttpClient(handler);
-    client.DefaultRequestHeaders.Add("Accept", "application/json");
-    var auth = await client.PostAsJsonAsync($"{host}/auth", new { password = apiKey});
+    var auth = await client.PostAsJsonAsync($"{host}/api/auth", new { password = apiKey});
     auth.EnsureSuccessStatusCode();
     var help = await auth.Content.ReadAsStringAsync();
     Console.WriteLine(help);
     var authResp = await auth.Content.ReadFromJsonAsync<AuthResponse>();
-    // Sæt Content-Type header
-    //var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
     // Hvis apiKey er sat, tilføjes den til Authorization header
     if (!string.IsNullOrWhiteSpace(authResp?.Session.Sid))
     {
         client.DefaultRequestHeaders.Add("sid", $"{authResp?.Session.Sid}");
     }
     var response = await client.PostAsJsonAsync(targetUrl, body);
-    //var response = await client.PostAsync(targetUrl, content);
     var responseContent = await response.Content.ReadAsStringAsync();
     return Results.Json(new {
         target = targetUrl,
