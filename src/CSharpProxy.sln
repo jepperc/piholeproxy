@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35913.81 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpProxy", "Proxy\CSharpProxy.csproj", "{6313ABC6-0A8A-6CD2-3C50-7B3354EDECB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpProxy.Test", "Proxy.Test\CSharpProxy.Test.csproj", "{8DA138AC-FBB9-295F-DA4C-37EF69402365}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6313ABC6-0A8A-6CD2-3C50-7B3354EDECB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6313ABC6-0A8A-6CD2-3C50-7B3354EDECB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6313ABC6-0A8A-6CD2-3C50-7B3354EDECB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6313ABC6-0A8A-6CD2-3C50-7B3354EDECB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DA138AC-FBB9-295F-DA4C-37EF69402365}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DA138AC-FBB9-295F-DA4C-37EF69402365}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DA138AC-FBB9-295F-DA4C-37EF69402365}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DA138AC-FBB9-295F-DA4C-37EF69402365}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {530678D8-70DC-4AB6-8DF4-04722127FF4F}
+	EndGlobalSection
+EndGlobal
