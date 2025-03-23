@@ -41,7 +41,7 @@ void MapProxyEndpoint(string route, string targetUrl, object body)
 
 // Eksempel: /disable endpoint, der omdanner GET til et POST-kald med et JSON-body
 MapProxyEndpoint(
-    "/disable",
+    "/disable300",
     $"{host}/api/dns/blocking",
     new { blocking = false, timer = 300 }
 );
@@ -53,7 +53,7 @@ MapProxyEndpoint(
 );
 
 MapProxyEndpoint(
-    "/disableperm",
+    "/disable",
     $"{host}/api/dns/blocking",
     new { blocking = false }
 );
